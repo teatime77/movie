@@ -3,8 +3,8 @@
 import { Speech, assert, AppMode, getPlayMode, PlayMode, msg, TT, MyError, $div, setPlayMode, appMode, $dlg, cancelSpeech } from "@i18n";
 import { $img, $textbox, $input_range, $textarea, ImgDiv, Img, TextBox, $grid, Flex, $label, $flex, $button, Grid, UI, $imgdiv } from "@layout";
 import { parseObject, Widget } from "@plane";
-import { urlOrigin, urlBase, theDoc, playStopButton, urlParams, setDoc } from "./movie_event";
-import { getMyDoc, getRootFolder, getStorageDownloadURL, showContents, uploadImgFile } from "@firebase";
+import { urlOrigin, urlBase, theDoc, playStopButton, urlParams, setDoc } from "./index";
+import { getMyDoc, getRootFolder, getStorageDownloadURL, showContents, uploadImgFile } from "@uroa-firebase";
 
 let root : Grid;
 let thumbnails : Grid;

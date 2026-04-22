@@ -1,7 +1,7 @@
 import { $, $div, $dlg, assert, cancelSpeech, getEngTexts, loadTranslationMap, msg, MyError, PlayMode, setPlayMode, setTextLanguageCode, setVoiceLanguageCode, sleep, Speech, TT } from "@i18n";
 import { getOperationsText, MathEntity, playBack, reasonToDoc, ShapeMode, Statement, usedReasons } from "@plane"
-import { BackUp, Edge, getBackUp, getGraph, graph, hideGraph, showGraph } from "@firebase"
-import { readDoc, theDoc, updateGraphDoc, loadOperationsAndPlay } from "./movie_event";
+import { BackUp, Edge, getBackUp, getGraph, graph, hideGraph, showGraph } from "@uroa-firebase"
+import { readDoc, theDoc, updateGraphDoc, loadOperationsAndPlay } from "./index";
 import { setCookie } from "./movie_ui";
 import { stopAudio } from "./timeline";
 

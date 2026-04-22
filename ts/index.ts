@@ -1,11 +1,11 @@
-import { DbDoc, getMyDoc, getRootFolder, initFirebase, initForMovie, makeDocsGraph, refId, uploadCanvasImg, writeGraphDocDB } from "@firebase";
 import { msg, getPlayMode, PlayMode, MyError, range, sleep, assert, parseURL, langCodeList, setTextLanguageCode, voiceLanguageCode, initI18n, appMode, AppMode, initSpeech, $dlg, setVoiceLanguageCode } from "@i18n";
+import { DbDoc, getMyDoc, getRootFolder, initFirebase, initForMovie, makeDocsGraph, uploadCanvasImg, writeGraphDocDB } from "@uroa-firebase";
 import { $button, $flex, bgColor, Button, fgColor, getPhysicalSize, Grid, Layout } from "@layout";
+import { getOperationsText, GlobalState, initPlane, initRelations, loadData, loadOperationsText, Plane, playBack, removeDiv } from "@plane";
 import { stopPlay } from "./flow";
 import { playLesson, initLesson, makeLessonPlayGrid, makeLessonEditGrid, initLessonPlay } from "./lesson";
 import { getCookie, showLangDlg, makePlayEditGrid, langButtonClicked } from "./movie_ui";
 import { includeDialog } from "./movie_util";
-import { getOperationsText, GlobalState, initPlane, initRelations, loadData, loadOperationsText, Plane, playBack, removeDiv } from "@plane";
 
 export let theDoc : DbDoc | undefined;
 export let root : Grid;

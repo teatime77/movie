@@ -34,7 +34,7 @@
       "@parser": ["../parser/ts/index"],
       "@layout": ["../layout/ts/index"],
       "@plane": ["../plane/ts/index"],
-      "@firebase": ["../firebase/ts/index"]
+      "@uroa-firebase": ["../firebase/ts/index"]
     },                                         
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */

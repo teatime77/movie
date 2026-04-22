@@ -1,8 +1,8 @@
 import { $dlg, TT, AppMode, msg, appMode, setTextLanguageCode, loadTranslationMap, setVoiceLanguageCode } from "@i18n";
 import { Flex, $grid, $flex, $button, Grid, Log } from "@layout";
-import { updateGraphDoc, root } from "./movie_event";
+import { updateGraphDoc, root } from "./index";
 import { Plane } from "@plane";
-import { copyAllGraph, showContents } from "@firebase";
+import { copyAllGraph, showContents } from "@uroa-firebase";
 
 let isVoiceLang : boolean;
 

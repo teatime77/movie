@@ -1,5 +1,5 @@
 import { msg, sleep, Speech, voiceLanguageCode } from "@i18n";
-import { urlOrigin } from "./movie_event";
+import { urlOrigin } from "./index";
 
 let audio : HTMLAudioElement | undefined;
 
