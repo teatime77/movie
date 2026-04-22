@@ -18,7 +18,7 @@ export function setDoc(doc : DbDoc | undefined){
     theDoc = doc;
 }
 
-export async function bodyOnLoad(){
+export async function initMovie(){
     [ urlOrigin, , urlParams, urlBase ] = parseURL();
     msg(`params:${JSON.stringify(urlParams) }`);
 
@@ -284,5 +284,3 @@ export async function updateGraphDoc(){
 export function SignUp(){
     $dlg("sign-up").showModal();
 }
-
-document.addEventListener('DOMContentLoaded', bodyOnLoad );
