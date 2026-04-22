@@ -284,3 +284,5 @@ export async function updateGraphDoc(){
 export function SignUp(){
     $dlg("sign-up").showModal();
 }
+
+export { playAllGraph } from "./flow";
