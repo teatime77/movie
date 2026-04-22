@@ -19,7 +19,11 @@ export function setDoc(doc : DbDoc | undefined){
 }
 
 export async function initMovie(){
-    [ urlOrigin, , urlParams, urlBase ] = parseURL();
+    let pathname: string;
+    [ urlOrigin, pathname, urlParams, urlBase ] = parseURL();
+    if (pathname.includes("diagram")) {
+        urlBase = "../movie";
+    }
     msg(`params:${JSON.stringify(urlParams) }`);
 
     document.body.style.color = fgColor;
@@ -162,7 +166,8 @@ export async function initMovie(){
         break;
     }
 
-    Layout.initLayout(root);
+    const layerMovie = document.getElementById("layer-movie");
+    Layout.initLayout(root, layerMovie || document.body);
 
     await initPlane(plane, root);
     
