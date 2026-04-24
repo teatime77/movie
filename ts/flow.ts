@@ -131,10 +131,7 @@ export async function playAllGraph(){
     const eng_texts = getEngTexts();
     if(eng_texts != ""){
 
-        msg(`eng-texts:[${eng_texts}]`);
-
-        ($("lang-texts-text") as HTMLTextAreaElement).value = eng_texts;
-        $dlg("lang-texts-dlg").showModal();
+        msg(`==================== eng-texts:[${eng_texts}] ====================`);
     }
 
     msg("play all done.");

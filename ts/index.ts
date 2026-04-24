@@ -1,8 +1,8 @@
 import { msg, getPlayMode, PlayMode, MyError, range, sleep, assert, parseURL, langCodeList, setTextLanguageCode, voiceLanguageCode, initI18n, appMode, AppMode, initSpeech, $dlg, setVoiceLanguageCode } from "@i18n";
-import { DbDoc, getMyDoc, getRootFolder, initFirebase, initForMovie, makeDocsGraph, uploadCanvasImg, writeGraphDocDB } from "@uroa-firebase";
+import { DbDoc, getMyDoc, getRootFolder, initFirebase, initForMovie, makeDocsGraph, uploadCanvasImg, writeGraphDocDB, addGraphSection, addGraphItem, changeDisplay, updateGraph, renameDoc, deleteDoc, renameSection } from "@uroa-firebase";
 import { $button, $flex, bgColor, Button, fgColor, getPhysicalSize, Grid, Layout } from "@layout";
 import { getOperationsText, GlobalState, initPlane, initRelations, loadData, loadOperationsText, Plane, playBack, removeDiv } from "@plane";
-import { stopPlay } from "./flow";
+import { stopPlay, playAllGraph, convert, backup, playBackUp } from "./flow";
 import { playLesson, initLesson, makeLessonPlayGrid, makeLessonEditGrid, initLessonPlay } from "./lesson";
 import { getCookie, showLangDlg, makePlayEditGrid, langButtonClicked } from "./movie_ui";
 import { includeDialog } from "./movie_util";
@@ -18,7 +18,45 @@ export function setDoc(doc : DbDoc | undefined){
     theDoc = doc;
 }
 
+function setupEventListeners() {
+    document.getElementById('play-all-graph')?.addEventListener('click', async () => {
+        await playAllGraph();
+    });
+    document.getElementById('convert-movie')?.addEventListener('click', async () => {
+        await convert();
+    });
+    document.getElementById('backup-movie')?.addEventListener('click', async () => {
+        await backup();
+    });
+    document.getElementById('play-backup')?.addEventListener('click', async () => {
+        await playBackUp();
+    });
+    document.getElementById('add-graph-section')?.addEventListener('click', async () => {
+        await addGraphSection();
+    });
+    document.getElementById('add-graph-item')?.addEventListener('click', async () => {
+        await addGraphItem();
+    });
+    document.getElementById('change-display')?.addEventListener('click', async () => {
+        await changeDisplay();
+    });
+    document.getElementById('update-graph')?.addEventListener('click', async () => {
+        await updateGraph();
+    });
+    document.getElementById('rename-doc')?.addEventListener('click', async () => {
+        await renameDoc();
+    });
+    document.getElementById('delete-doc')?.addEventListener('click', async () => {
+        await deleteDoc();
+    });
+    document.getElementById('rename-section')?.addEventListener('click', async () => {
+        await renameSection();
+    });
+}
+
 export async function initMovie(){
+    setupEventListeners();
+
     let pathname: string;
     [ urlOrigin, pathname, urlParams, urlBase ] = parseURL();
     if (pathname.includes("diagram")) {
@@ -290,4 +328,4 @@ export function SignUp(){
     $dlg("sign-up").showModal();
 }
 
-export { playAllGraph } from "./flow";
+export { playAllGraph };
