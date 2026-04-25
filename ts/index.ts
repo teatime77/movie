@@ -1,11 +1,13 @@
-import { msg, getPlayMode, PlayMode, MyError, range, sleep, assert, parseURL, langCodeList, setTextLanguageCode, voiceLanguageCode, initI18n, appMode, AppMode, initSpeech, $dlg, setVoiceLanguageCode } from "@i18n";
+import { msg, getPlayMode, PlayMode, MyError, range, sleep, assert, parseURL, langCodeList, setTextLanguageCode, voiceLanguageCode, initI18n, appMode, AppMode, initSpeech, $dlg, setVoiceLanguageCode, downloadJson, fetchJson } from "@i18n";
 import { DbDoc, getMyDoc, getRootFolder, initFirebase, initForMovie, makeDocsGraph, uploadCanvasImg, writeGraphDocDB, addGraphSection, addGraphItem, changeDisplay, updateGraph, renameDoc, deleteDoc, renameSection } from "@uroa-firebase";
 import { $button, $flex, bgColor, Button, fgColor, getPhysicalSize, Grid, Layout } from "@layout";
 import { getOperationsText, GlobalState, initPlane, initRelations, loadData, loadOperationsText, Plane, playBack, removeDiv } from "@plane";
-import { stopPlay, playAllGraph, convert, backup, playBackUp } from "./flow";
+import { stopPlay, playAllGraph, convert, backup, playBackUp, newDocs, isJson, allData, fetchAllData } from "./flow";
 import { playLesson, initLesson, makeLessonPlayGrid, makeLessonEditGrid, initLessonPlay } from "./lesson";
 import { getCookie, showLangDlg, makePlayEditGrid, langButtonClicked } from "./movie_ui";
 import { includeDialog } from "./movie_util";
+import { loadOperationsJSON } from "../../plane/ts/factories";
+import { Operation } from "../../plane/ts/operation";
 
 export let theDoc : DbDoc | undefined;
 export let root : Grid;
@@ -63,6 +65,8 @@ export async function initMovie(){
         urlBase = "../movie";
     }
     msg(`params:${JSON.stringify(urlParams) }`);
+
+    await fetchAllData();
 
     document.body.style.color = fgColor;
     document.body.style.backgroundColor = bgColor;
@@ -267,10 +271,16 @@ async function undo_redo_test(){
     }
 }
 
-export async function loadOperationsAndPlay(data : any) {
+export async function loadOperationsAndPlay(id:number, name: string, parent:number, data : any) {
     const view = GlobalState.View__current!;
 
-    let operations = await loadOperationsText(data);
+    let operations : Operation[];
+    if(isJson){
+        operations = await loadOperationsJSON(data);
+    }
+    else{
+        operations = await loadOperationsText(data);
+    }
 
     const num_operations = operations.length;
     operations.forEach(x => view.addOperation(x));
@@ -279,9 +289,37 @@ export async function loadOperationsAndPlay(data : any) {
     assert(num_operations == view.operations.length);
 
     // await undo_redo_test();
+    const doc = {
+        id,
+        name,
+        parent,
+        operations : operations.map(x => x.toJson())
+    };
+
+    newDocs.push(doc);
+}
+
+export async function readDocJson(docs:any[], doc_id : number) {
+
+    removeDiv();
+
+    const view = GlobalState.View__current!;
+    view.clearView();
+
+    const doc = docs.find(x => x.id == doc_id);
+    assert(doc != undefined);
+
+    msg(`read doc json:${doc.id} ${doc.name}`);
+
+    await loadOperationsAndPlay(doc.id, doc.name, doc.parent != null ? doc.parent.id : NaN, doc);
 }
 
 export async function readDoc(doc_id : number) {
+    if(isJson){
+        await readDocJson(allData.docs, doc_id);
+        return;
+    }
+
     removeDiv();
 
     const view = GlobalState.View__current!;
@@ -295,7 +333,7 @@ export async function readDoc(doc_id : number) {
 
         if(2 <= data.version){
 
-            await loadOperationsAndPlay(data);
+            await loadOperationsAndPlay(theDoc.id, theDoc.name, theDoc.parent != null ? theDoc.parent.id : NaN, data);
         }
         else{
 
@@ -312,7 +350,7 @@ export async function updateGraphDoc(){
     const text = getOperationsText();
     
     const data = JSON.parse(text);
-    await loadOperationsAndPlay(data);
+    await loadOperationsAndPlay(theDoc.id, theDoc.name, theDoc.parent != null ? theDoc.parent.id : NaN, data);
 
     msg(`update Graph Doc ${theDoc.id}:${theDoc.name} \n${text}`);
     if(! window.confirm(`update doc?\n${theDoc.id}:${theDoc.name}`)){

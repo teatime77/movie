@@ -1,9 +1,23 @@
-import { $, $div, $dlg, assert, cancelSpeech, getEngTexts, loadTranslationMap, msg, MyError, PlayMode, setPlayMode, setTextLanguageCode, setVoiceLanguageCode, sleep, Speech, TT } from "@i18n";
+import { $, $div, $dlg, assert, cancelSpeech, downloadJson, fetchJson, fetchText, getEngTexts, loadTranslationMap, msg, MyError, PlayMode, setPlayMode, setTextLanguageCode, setVoiceLanguageCode, sleep, Speech, TT } from "@i18n";
 import { getOperationsText, MathEntity, playBack, reasonToDoc, ShapeMode, Statement, usedReasons } from "@plane"
 import { BackUp, Edge, getBackUp, getGraph, graph, hideGraph, showGraph } from "@uroa-firebase"
-import { readDoc, theDoc, updateGraphDoc, loadOperationsAndPlay } from "./index";
+import { readDoc, theDoc, updateGraphDoc, loadOperationsAndPlay, readDocJson } from "./index";
 import { setCookie } from "./movie_ui";
 import { stopAudio } from "./timeline";
+
+export let allData : { type:string, version:number, docs:any[]};
+export const newDocs : any[] = [];
+export let isJson = true;
+
+export async function fetchAllData(){
+    allData = await fetchJson("http://127.0.0.1:5000/movie/all-kyozai.json");
+    // バージョン3以上を新しいJSON配列フォーマットとして扱う
+    if (3 <= allData.version && Array.isArray(allData.docs)) {
+    } else {
+        msg(`data is empty or invalid format.`);
+        return [];
+    }
+}
 
 function addTexDiv(){
     const div = document.createElement("div");
@@ -134,6 +148,16 @@ export async function playAllGraph(){
         msg(`==================== eng-texts:[${eng_texts}] ====================`);
     }
 
+    if(!isJson){
+        const data = {
+            type    : "uroa-stem",
+            version : 3.0,
+            docs    : newDocs
+        };
+
+        downloadJson("all-kyozai", data);
+    }
+
     msg("play all done.");
 }
 
@@ -190,7 +214,7 @@ export async function playBackUp(){
     for await(const doc_obj of getBackUp()){
         msg(`play backup:${doc_obj.name}`)
         const data = JSON.parse(doc_obj.text);
-        await loadOperationsAndPlay(data);
+        await loadOperationsAndPlay(NaN, "", NaN, data);
     }
 
     showGraph();
