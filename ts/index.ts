@@ -304,7 +304,7 @@ export async function readDocJson(docs:any[], doc_id : number) {
     removeDiv();
 
     const view = GlobalState.View__current!;
-    view.clearView();
+    view.clearCanvas();
 
     const doc = docs.find(x => x.id == doc_id);
     assert(doc != undefined);
@@ -323,7 +323,7 @@ export async function readDoc(doc_id : number) {
     removeDiv();
 
     const view = GlobalState.View__current!;
-    view.clearView();
+    view.clearCanvas();
     // msg(`id:${id}`);
     theDoc = await getMyDoc(doc_id);
     if(theDoc != undefined){
