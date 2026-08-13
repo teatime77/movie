@@ -1,7 +1,7 @@
 import { $, $div, $dlg, assert, cancelSpeech, downloadJson, fetchJson, fetchText, getEngTexts, loadTranslationMap, msg, MyError, PlayMode, setPlayMode, setTextLanguageCode, setVoiceLanguageCode, sleep, Speech, TT } from "@i18n";
 import { getOperationsText, MathEntity, playBack, reasonToDoc, ShapeMode, Statement, usedReasons } from "@plane"
 import { BackUp, Edge, getBackUp, getGraph, graph, hideGraph, showGraph } from "@uroa-firebase"
-import { readDoc, theDoc, updateGraphDoc, loadOperationsAndPlay, readDocJson } from "./index";
+import { readDoc, theDoc, updateGraphDoc, loadOperationsAndPlay, readDocJson, urlBase } from "./index";
 import { setCookie } from "./movie_ui";
 import { stopAudio } from "./timeline";
 
@@ -10,7 +10,7 @@ export const newDocs : any[] = [];
 export let isJson = true;
 
 export async function fetchAllData(){
-    allData = await fetchJson("http://127.0.0.1:5000/movie/all-kyozai.json");
+    allData = await fetchJson(`${urlBase}/all-kyozai.json`);
     // バージョン3以上を新しいJSON配列フォーマットとして扱う
     if (3 <= allData.version && Array.isArray(allData.docs)) {
     } else {
